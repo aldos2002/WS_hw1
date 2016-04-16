@@ -32,11 +32,11 @@ public class UserDao {
         writeCSVData(users);
     }
 
-    public int updateUser(User updatedUser) {
+    public int updateUser(String userid, User updatedUser) {
+        LOG.info("Start update user: "+userid);
         List<User> users = parseCSVToBeanList();
         for (User user : users) {
-            if (user.getLogin().equals(updatedUser.getLogin())) {
-                LOG.info(user.getLogin()+ "" + updatedUser.getLogin());
+            if (user.getLogin().equals(userid)) {
                 users.remove(user);
                 users.add(updatedUser);
                 writeCSVData(users);
@@ -53,6 +53,7 @@ public class UserDao {
         for (User user : users) {
             if (user.getLogin().equals(login)) {
                 users.remove(user);
+                writeCSVData(users);
                 LOG.info("User deleted.");
                 return 1;
             }

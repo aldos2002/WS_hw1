@@ -1,5 +1,5 @@
 package com.epam.rest;
- 
+
 import com.epam.dao.UserDao;
 import com.epam.entities.User;
 
@@ -12,41 +12,41 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
- 
-@Path("/hello")
+
+@Path("/users")
 public class HelloWorldService {
     private UserDao userDao = new UserDao();
 
-    @GET
-    @Path("/users/{userid}")
-    @Produces(MediaType.APPLICATION_XML)
-    public User readUser(@PathParam("userid") String user){
-        return userDao.readUser(user);
-    }
-
     @POST
-    @Path("/users")
+    @Path("/create")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
     public User createUser(User user) {
         userDao.addUser(user);
-        return new User();
+        return user;
+    }
+
+    @GET
+    @Path("/read/{userid}")
+    @Produces(MediaType.APPLICATION_XML)
+    public User readUser(@PathParam("userid") String user) {
+        return userDao.readUser(user);
     }
 
     @POST
-    @Path("/usersupdate")
+    @Path("/update/{userid}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User updateUser(User user) {
-        int result = userDao.updateUser(user);
-        if(result == 1){
+    public User updateUser(@PathParam("userid") String userid, User user) {
+        int result = userDao.updateUser(userid, user);
+        if (result == 1) {
             return user;
         }
         return user;
     }
 
     @DELETE
-    @Path("/users/{userid}")
+    @Path("/delete/{userid}")
     @Produces(MediaType.APPLICATION_XML)
     public Response deleteUser(@PathParam("userid") String login) {
         int result = userDao.deleteUser(login);
