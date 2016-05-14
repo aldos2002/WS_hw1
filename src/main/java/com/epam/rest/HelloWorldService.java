@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -18,7 +19,7 @@ public class HelloWorldService {
     private UserDao userDao = new UserDao();
 
     @POST
-    @Path("/create")
+    @Path("/")
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_JSON)
     public User createUser(User user) {
@@ -27,26 +28,23 @@ public class HelloWorldService {
     }
 
     @GET
-    @Path("/read/{userid}")
+    @Path("/{userid}")
     @Produces(MediaType.APPLICATION_XML)
     public User readUser(@PathParam("userid") String user) {
         return userDao.readUser(user);
     }
 
-    @POST
-    @Path("/update/{userid}")
+    @PUT
+    @Path("/{userid}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public User updateUser(@PathParam("userid") String userid, User user) {
-        int result = userDao.updateUser(userid, user);
-        if (result == 1) {
-            return user;
-        }
+        userDao.updateUser(userid, user);
         return user;
     }
 
     @DELETE
-    @Path("/delete/{userid}")
+    @Path("/{userid}")
     @Produces(MediaType.APPLICATION_XML)
     public Response deleteUser(@PathParam("userid") String login) {
         int result = userDao.deleteUser(login);
